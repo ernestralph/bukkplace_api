@@ -2,13 +2,19 @@ const { model } = require("mongoose")
 
 
 function createUser(req, res){
+ console.log(req.body);
  console.log(req, 'user created')
 }
 function login(req, res){
- console.log(req, 'user logged in')
+ return res.status(200).json({
+         'user':'ayodele'
+        })
 }
 function logout(req, res){
- console.log(req, 'user logged out')
+ console.log(req.body);
+  return res.status(200).json({
+         'user':'ayodele'
+        })
 }
 
 module.exports = ({

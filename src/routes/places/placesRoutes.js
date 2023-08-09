@@ -10,10 +10,10 @@ const {
 const placesRouter = express.Router();
 
 
-placesRouter.get('/places', getPlaces);
-placesRouter.post('/places', addPlace);
-placesRouter.get('/places/:id', getPlace);
-placesRouter.put('/places/:id', updatePlace);
-placesRouter.delete('/places/:id', deletePlace);
+placesRouter.get('/', getPlaces);
+placesRouter.post('/', addPlace);
+placesRouter.get('/:id', getPlace);
+placesRouter.put('/:id', updatePlace);
+placesRouter.delete('/:id', deletePlace);
 
 module.exports = placesRouter;

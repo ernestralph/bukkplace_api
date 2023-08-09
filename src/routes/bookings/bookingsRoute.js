@@ -10,10 +10,10 @@ const {
 const bookingRouter = express.Router()
 
 
-bookingRouter.get('/bookings', getBookings);
-bookingRouter.get('/booking/:id', getBooking);
-bookingRouter.post('/bookings', createBooking);
-bookingRouter.put('/bookings/:id', updateBooking);
-bookingRouter.delete('/bookings/:id', deleteBooking);
+bookingRouter.get('/', getBookings);
+bookingRouter.get('/:id', getBooking);
+bookingRouter.post('/', createBooking);
+bookingRouter.put('/:id', updateBooking);
+bookingRouter.delete('/:id', deleteBooking);
 
 module.exports = bookingRouter

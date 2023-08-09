@@ -7,21 +7,20 @@ const bookingRouter = require('./routes/bookings/bookingsRoute')
 const placesRouter = require('./routes/places/placesRoutes')
 
 
+const app = express();
+
 const corsOptions = {
-  origin: 'http://localhost:3000',
-  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  origin: 'http://localhost:3000/',
 }
 
-const app = express();
+
 
 app.use(cors(corsOptions))
 app.use(morgan('combined'))
 
-app.use(express.json)
-app.use(authRouter)
-app.use(bookingRouter)
-app.use(placesRouter)
+app.use(express.json())
+app.use('/auth/', authRouter)
+app.use('/bookings/', bookingRouter)
+app.use('/places/', placesRouter)
 
-module.exports = ({
- app,
-})
+module.exports = app
