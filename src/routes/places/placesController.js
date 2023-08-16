@@ -1,23 +1,91 @@
-  function getPlace(req, res){
-   console.log('this function should return a place by id')
+  const {
+  savePlace,
+  getPlaces,
+  getPlace,
+  updatePlace,
+  deletePlace,
+  } = require('../../models/place.model');
+  
+  async function httpGetPlace(req, res){
+    try {
+      const place = await getPlace(req.query.id);
+      if(place){
+        return res.status(200).json({
+          "data": place
+        });
+      }else{
+        return res.status(404).json({
+          "error": "Place not found!",
+        });
+      }
+    } catch (error) {
+      return res.status(500).json({
+        "error": "Error fetching place",
+      });
+    }
   }
-  function getPlaces(req, res){
-   console.log('this function should return all places')
+
+  async function httpGetPlaces(req, res){
+    try {
+      const places = await getPlaces();
+      if(places){
+        return res.status(200).json({
+          "data": places
+        });
+      }else{
+        return res.status(404).json({
+          "error": "No places found",
+        });
+      }
+    } catch (error) {
+      return res.status(500).json({
+        "error": "Error fetching places",
+      });
+    }
   }
-  function addPlace(req, res){
-   console.log('this function should create a place')
+
+  async function httpSavePlace(req, res){
+    try {
+      await savePlace(req.body);
+      return res.status(200).json({
+      message: 'New Place created successfully',
+      });
+    } catch (error) {
+      return res.status(500).json({
+        "error": "Error creating place",
+      });
+    }
   }
-  function updatePlace(req, res){
-   console.log('this function should update a place')
+
+  async function httpUpdatePlace(req, res){
+    try {
+      await updatePlace(req.query.id, req.body);
+      return res.status(200).json({
+      message: ' Place updated successfully',
+      });
+    } catch (error) {
+      return res.status(500).json({
+        "error": "Error updating place",
+      });
+    }
   }
-  function deletePlace(req, res){
-   console.log('this function should delete a getPlace')
+  async function httpDeletePlace(req, res){
+   try {
+      await deletePlace(req.query.id);
+      return res.status(200).json({
+      message: 'Place deleted successfully',
+      });
+    } catch (error) {
+      return res.status(500).json({
+        "error": "Error deleting place",
+      });
+    }
   }
 
   module.exports = ({
-   getPlace,
-   getPlaces,
-   addPlace,
-   updatePlace,
-   deletePlace
+    httpGetPlace,
+    httpGetPlaces,
+    httpSavePlace,
+    httpUpdatePlace,
+    httpDeletePlace
   })
