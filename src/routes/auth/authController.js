@@ -1,15 +1,18 @@
 const { model } = require("mongoose")
+const {createUser} = require("../../models/auth.model")
 
 
-function createUser(req, res){
- console.log(req.body);
- console.log(req, 'user created')
+async function signup(req, res){
+        const newUser = await createUser(req.body);
+        return res.status(200).json(newUser);
 }
+
 function login(req, res){
  return res.status(200).json({
          'user':'ayodele'
         })
 }
+
 function logout(req, res){
  console.log(req.body);
   return res.status(200).json({
@@ -18,7 +21,7 @@ function logout(req, res){
 }
 
 module.exports = ({
- createUser,
- login,
- logout
+signup,
+login,
+logout
 })
