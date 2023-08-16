@@ -1,20 +1,21 @@
 const cors = require('cors')
 const express = require('express')
 const morgan = require('morgan')
+const helmet = require('helmet')
 
 const authRouter = require('./routes/auth/authRoutes')
 const bookingRouter = require('./routes/bookings/bookingsRoute')
 const placesRouter = require('./routes/places/placesRoutes')
 
 
-const app = express();
-
 const corsOptions = {
   origin: 'http://localhost:3000/',
 }
 
+const app = express();
 
 
+app.use(helmet())
 app.use(cors(corsOptions))
 app.use(morgan('combined'))
 
