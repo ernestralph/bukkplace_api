@@ -36,6 +36,10 @@ const placeSchema = mongoose.Schema({
   type: String,
   default:"https://res.cloudinary.com/dxfq3iotg/image/",
   required:false
+ },
+ isBooked:{
+  type: Boolean,
+  default: false
  }
 });
 
