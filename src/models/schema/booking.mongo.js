@@ -10,7 +10,7 @@ const bookingSchema = mongoose.Schema({
   required :true
  },
  placeTitle:{
-  type: true,
+  type: String,
   required: true
  },
  placeImage:{

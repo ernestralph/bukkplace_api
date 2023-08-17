@@ -1,19 +1,19 @@
 const express = require('express');
 const {
-  getPlace,
-  getPlaces,
-  addPlace,
-  updatePlace,
-  deletePlace
+  httpGetPlace,
+  httpGetPlaces,
+  httpSavePlace,
+  httpUpdatePlace,
+  httpDeletePlace,
 } = require('./placesController');
 
 const placesRouter = express.Router();
 
 
-placesRouter.get('/', getPlaces);
-placesRouter.post('/', addPlace);
-placesRouter.get('/:id', getPlace);
-placesRouter.put('/:id', updatePlace);
-placesRouter.delete('/:id', deletePlace);
+placesRouter.get('/', httpGetPlaces);
+placesRouter.post('/', httpSavePlace);
+placesRouter.get('/:id', httpGetPlace);
+placesRouter.put('/:id', httpUpdatePlace);
+placesRouter.delete('/:id', httpDeletePlace);
 
 module.exports = placesRouter;
