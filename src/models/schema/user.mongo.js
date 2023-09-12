@@ -1,10 +1,13 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const JWT_PRIVATE_KEY = process.env.JWT_PRIVATE_KEY;
 
 const userSchema = mongoose.Schema(
  {
   firstName:{
    type: String,
-   required: true,
+   required: [true, 'first name is required'],
   },
   lastName:{
    type: String,
@@ -13,14 +16,40 @@ const userSchema = mongoose.Schema(
   email:{
    type: String,
    required: true,
+   lowercase: true,
+   trim: true,
   },
   password:{
    type :String,
-   minlength:[6,'password must be at least six characters'],
-   maxlength:[15],
    required: true,
+   select: true
   }
- });
+ },
+ {timestamps: true}
+ );
+
+ userSchema.pre('save', function (next) {
+  const user = this;
+
+  if (!user.isModified('password')) return next();
+  bcrypt.genSalt(10, (err, salt) => {
+    if (err) return next(err);
+    bcrypt.hash(user.password, salt, (err, hash) => {
+      if (err) return next(err);
+      user.password = hash;
+      next();
+    });
+  });
+});
+
+userSchema.methods.generateAccessJWT = function () {
+  let payload = {
+    id: this._id,
+  };
+  return jwt.sign(payload, JWT_PRIVATE_KEY, {
+    expiresIn: '20m',
+  });
+};
 
 
- module.exports = mongoose.model("User",userSchema);
+ module.exports = mongoose.model("User", userSchema);

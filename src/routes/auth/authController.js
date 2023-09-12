@@ -1,27 +1,63 @@
-const { model } = require("mongoose")
-const {createUser} = require("../../models/auth.model")
+
+const {createUser, login} = require("../../models/auth.model");
+const { model } = require("mongoose");
+const BlacklistedToken =  require('../../models/schema/blackListedToken.mongo.js');
 
 
-async function signup(req, res){
-        const newUser = await createUser(req.body);
-        return res.status(200).json(newUser);
+async function signUp(req, res){
+const {data, status, message} = await createUser(req.body);
+return res.status(status).json({
+message: message,
+data: data
+});
 }
 
-function login(req, res){
- return res.status(200).json({
-         'user':'ayodele'
-        })
+async function signIn(req, res){
+    const {data, status, message, token} = await login(req.body);
+
+    let options = {
+      maxAge: 20 * 60 * 1000,
+      httpOnly: true,
+      secure: true,
+      sameSite: 'None',
+    };
+
+    res.cookie('SessionID', token, options);
+    return res.status(status).json({
+        message: message,
+        data: data
+        });
 }
 
-function logout(req, res){
- console.log(req.body);
-  return res.status(200).json({
-         'user':'ayodele'
-        })
+
+
+ async function signOut(req, res) {
+  try {
+    const authHeader = req.headers['cookie']; 
+    if (!authHeader) return res.sendStatus(204); 
+    const cookie = authHeader.split('=')[1]; 
+    const accessToken = cookie.split(';')[0];
+    const isBlacklisted = await BlacklistedToken.findOne({ token: accessToken }); 
+
+    if (isBlacklisted) return res.sendStatus(204);
+    const newBlacklist = new BlacklistedToken({
+      token: accessToken,
+    });
+    
+    await newBlacklist.save();
+    res.setHeader('Clear-Site-Data', '"cookies", "storage"');
+    res.status(200).json({ message: 'You are logged out!' });
+  } catch (err) {
+    res.status(500).json({
+      status: 'error',
+      message: 'Internal Server Error',
+    });
+  }
+  res.end();
 }
 
 module.exports = ({
-signup,
-login,
-logout
+signUp,
+signIn,
+signOut
 })
