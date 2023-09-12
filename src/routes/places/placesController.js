@@ -6,6 +6,7 @@
   deletePlace,
   } = require('../../models/place.model');
   
+  
   async function httpGetPlace(req, res){
     try {
       const place = await getPlace(req.query.id);
