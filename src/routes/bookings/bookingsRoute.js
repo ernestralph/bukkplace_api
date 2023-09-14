@@ -4,16 +4,18 @@ const {
    httpGetBookings,
    httpSaveBooking,
    httpUpdateBooking,
-   httpDeleteBooking
+   httpDeleteBooking,
+   httpUnBookPlace
 } = require('./bookingsController')
 
 const bookingRouter = express.Router()
 
 
 bookingRouter.post('/', httpSaveBooking);
-bookingRouter.get('/', httpGetBookings);
-bookingRouter.put('/:id', httpUpdateBooking);
 bookingRouter.get('/:id', httpGetBooking);
-bookingRouter.delete('/:id', httpDeleteBooking);
+bookingRouter.get('/', httpGetBookings);
+bookingRouter.put('/', httpUpdateBooking);
+bookingRouter.put('/unbook/', httpUnBookPlace);
+bookingRouter.delete('/', httpDeleteBooking);
 
 module.exports = bookingRouter

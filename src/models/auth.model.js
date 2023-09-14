@@ -11,6 +11,7 @@ async function createUser(user){
     data:[], 
     status: 400,
    }}
+
   const newUser = new User({
    firstName: user.firstName,
    lastName: user.lastName,
@@ -35,6 +36,7 @@ async function createUser(user){
 async function login(userObj){
  const {email} = userObj;
  try {
+
     const user = await User.findOne({ email }).select('+password');
     if(!user){return {data:[], message:"Auth Failed", status: 401}}
 
@@ -51,12 +53,15 @@ async function login(userObj){
       status: 200,
       token : token,
      }
+
    } catch (error) {
+
      return {
       data: [],
       message:"Internal Server Error!",
       status: 500
      }  
+     
    }
 }
 

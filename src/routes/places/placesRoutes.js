@@ -11,7 +11,7 @@ const placesRouter = express.Router();
 
 
 placesRouter.get('/', httpGetPlaces);
-placesRouter.post('/', httpSavePlace);
+placesRouter.post('/:id', httpSavePlace);
 placesRouter.get('/:id', httpGetPlace);
 placesRouter.put('/:id', httpUpdatePlace);
 placesRouter.delete('/:id', httpDeletePlace);
