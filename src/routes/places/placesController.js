@@ -6,81 +6,46 @@
   deletePlace,
   } = require('../../models/place.model');
   
-  
+
+  async function httpSavePlace(req, res){
+   const data = await savePlace(req.body);
+   res.status(data.status).json({
+      message: data.message,
+      data: data.data
+    });
+  }
+
   async function httpGetPlace(req, res){
-    try {
-      const place = await getPlace(req.query.id);
-      if(place){
-        return res.status(200).json({
-          "data": place
-        });
-      }else{
-        return res.status(404).json({
-          "error": "Place not found!",
-        });
-      }
-    } catch (error) {
-      return res.status(500).json({
-        "error": "Error fetching place",
-      });
-    }
+    const data = await getPlace(req.params.id);
+    res.status(data.status).json({
+      message: data.message,
+      data: data.data
+    });
   }
 
   async function httpGetPlaces(req, res){
-    try {
-      const places = await getPlaces();
-      if(places){
-        return res.status(200).json({
-          "data": places
-        });
-      }else{
-        return res.status(404).json({
-          "error": "No places found",
-        });
-      }
-    } catch (error) {
-      return res.status(500).json({
-        "error": "Error fetching places",
-      });
-    }
-  }
-
-  async function httpSavePlace(req, res){
-    try {
-      await savePlace(req.body);
-      return res.status(200).json({
-      message: 'New Place created successfully',
-      });
-    } catch (error) {
-      return res.status(500).json({
-        "error": "Error creating place",
-      });
-    }
+    const data = await getPlaces();
+    res.status(data.status).json({
+      message: data.message,
+      data: data.data
+    });
   }
 
   async function httpUpdatePlace(req, res){
-    try {
-      await updatePlace(req.query.id, req.body);
-      return res.status(200).json({
-      message: ' Place updated successfully',
-      });
-    } catch (error) {
-      return res.status(500).json({
-        "error": "Error updating place",
-      });
-    }
+   const data = await updatePlace(req.params.id, req.body);
+   res.status(data.status).json({
+      message: data.message,
+      data: data.data
+    });
   }
+
   async function httpDeletePlace(req, res){
-   try {
-      await deletePlace(req.query.id);
-      return res.status(200).json({
-      message: 'Place deleted successfully',
-      });
-    } catch (error) {
-      return res.status(500).json({
-        "error": "Error deleting place",
-      });
-    }
+    const data = await deletePlace(req.params.id);
+    res.status(data.status).json({
+       message: data.message,
+       data: data.data
+     });
+   
   }
 
   module.exports = ({
